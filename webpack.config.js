@@ -90,7 +90,11 @@ const commonConfig = {
 //////////////////////
 
 const devConfig = {
-  output: {pathinfo: true}
+  output: {pathinfo: true},
+  devServer: {
+    writeToDisk: true
+  },
+  devtool: 'source-map',
 };
 
 const prodConfig = {

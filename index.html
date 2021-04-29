@@ -489,21 +489,38 @@ aria-labelledby="importPanelHeader">
             Run
           </button>
         </div>
+        <div class="col-xs-1">
+          <input id="duration_input" type="number" value="100" style="width: 50px;"/>
+        </div>
+        <div class="col-xs-1">
+          <button type="button" class="btn btn-default text-center tm-btn-diagram tm-run-until" style="width: 150px;">
+            <span class="glyphicon glyphicon-play" aria-hidden="true"></span><br>
+            Run until
+          </button>
+          <input id="until_value" type="text" value="" style="width: 150px;"/>
+        </div>
       </div>
     </div>
 
     <!-- Code Editor -->
     <div class="col-md-5 form-group text-center">
-    <div id="editor-wrapper">
-      <div id="editor-alerts-container"></div>
-      <button type="button" class="btn btn-primary tm-editor-load">
-        Load machine
-      </button>
-      <button type="button" class="btn btn-default tm-editor-revert">
-        Revert to diagram
-      </button>
-      <div id="editor-container" class="tm-editor"></div>
-    </div>
+      <div id="editor-wrapper">
+        <div id="editor-alerts-container"></div>
+        <button type="button" class="btn btn-primary tm-editor-load">
+          Load machine
+        </button>
+        <button type="button" class="btn btn-default tm-editor-revert">
+          Revert to diagram
+        </button>
+        <div id="editor-container" class="tm-editor"></div>
+      </div>
+      <div style="margin-top: 150px;">
+        <input id="from_prefix" type="text" />
+        <button type="button" class="btn btn-default text-center tm-editor-prefix">
+          Change prefix
+        </button>
+        <input id="to_prefix" type="text" />
+      </div>
     </div>
   </div>
 

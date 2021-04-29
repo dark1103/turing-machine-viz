@@ -61,6 +61,24 @@ function TMDocumentController(containers, buttons, document) {
         self.revertEditorSource();
         self.editor.focus();
       });
+  editorButtons.prefix
+      .addEventListener('click', function () {
+          var sourceCode = self.editor.getValue();
+          var from = $('#from_prefix').val();
+          var to = $('#to_prefix').val();
+          var reg = new RegExp('(\\n[\\s]+)' + from + '([_a-zA-Z0-9]+:[\\s]*\\n)', 'g');
+          sourceCode = sourceCode.replaceAll(reg, '$1' + to +'$2');
+
+          var reg2 = new RegExp('([RL][\\s]*:[\\s]*)' + from + '([_a-zA-Z0-9]+[^_a-zA-Z0-9])', 'g');
+          sourceCode = sourceCode.replaceAll(reg2, '$1' + to +'$2');
+
+          var reg3 = new RegExp('(start state:[\\s]*)' + from + '([_a-zA-Z0-9]+[^_a-zA-Z0-9])', 'g');
+          sourceCode = sourceCode.replaceAll(reg3, '$1' + to +'$2');
+
+          self.setEditorValue(sourceCode);
+          $('#from_prefix').val(to);
+          $('#to_prefix').val('');
+      });
 
   Object.defineProperties(this, {
     __document: {
@@ -298,7 +316,9 @@ TMDocumentController.prototype.loadEditorSource = function () {
   var errors = (function () {
     try {
       var isNewDiagram = !this.hasValidDiagram;
-      this.simulator.sourceCode = this.editor.getValue();
+      var sourceCode = this.editor.getValue().replaceAll(/:([^\s])/g, ': $1');
+      this.setEditorValue(sourceCode);
+      this.simulator.sourceCode = sourceCode;
       if (isNewDiagram) {
         // loaded new, or recovery succeeded => close error notice, restore positions
         this.showCorruptDiagramAlert(false);

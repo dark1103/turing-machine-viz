@@ -27,9 +27,16 @@ function animatedTransition(graph, animationCallback) {
     var tuple = graph.getInstructionAndEdge(state, symbol);
     if (tuple == null) { return null; }
 
-    animationCallback(tuple.edge);
+    var duration = getDuration();
+
+    animationCallback(tuple.edge, duration);
+
     return tuple.instruction;
   };
+}
+
+function getDuration(){
+  return $('#duration_input').val();
 }
 
 /**
@@ -37,16 +44,15 @@ function animatedTransition(graph, animationCallback) {
  * @param  {{domNode: Node}} edge
  * @return {D3Transition} The animation. Use this for transition chaining.
  */
-function pulseEdge(edge) {
+function pulseEdge(edge, duration) {
   var edgepath = d3.select(edge.domNode);
   return edgepath
       .classed('active-edge', true)
-    .transition()
+    .transition().duration(duration)
       .style('stroke-width', '3px')
-    .transition()
+    .transition().duration(duration)
       .style('stroke-width', '1px')
-    .transition()
-      .duration(0)
+    .transition().duration(0)
       .each('start', /* @this edge */ function () {
         d3.select(this).classed('active-edge', false);
       })
@@ -77,12 +83,12 @@ function TMViz(div, spec, posTable) {
   if (posTable != undefined) { this.positionTable = posTable; }
 
   this.edgeAnimation = pulseEdge;
-  this.stepInterval = 100;
+  this.stepInterval = 0;
 
   var self = this;
   // We hook into the animation callback to know when to start the next step (when running).
-  function animateAndContinue(edge) {
-    var transition = self.edgeAnimation(edge);
+  function animateAndContinue(edge, duration) {
+    var transition = self.edgeAnimation(edge, duration);
     if (self.isRunning) {
       transition.transition().duration(self.stepInterval).each('end', function () {
         // stop if machine was paused during the animation
@@ -108,6 +114,7 @@ function TMViz(div, spec, posTable) {
   this.isHalted = false;
 
   var isRunning = false;
+
   /**
    * Set isRunning to true to run the machine, and false to stop it.
    */
@@ -133,6 +140,11 @@ TMViz.prototype.step = function () {
   if (!this.machine.step()) {
     this.isRunning = false;
     this.isHalted = true;
+  }
+
+  if(this.untilState === this.machine.state){
+    this.untilState = undefined;
+    this.isRunning = false;
   }
 };
 

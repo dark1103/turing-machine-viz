@@ -299,11 +299,14 @@ var controller = (function () {
     simulator: {
       run: getButton(sim, 'run'),
       step: getButton(sim, 'step'),
-      reset: getButton(sim, 'reset')
+      reset: getButton(sim, 'reset'),
+      run_until: getButton(sim, 'run-until'),
     },
     editor: {
       load: getButton(ed, 'editor-load'),
-      revert: getButton(ed, 'editor-revert')
+      revert: getButton(ed, 'editor-revert'),
+      prefix: getButton(document, 'editor-prefix'),
+      delprefix: getButton(document, 'editor-delprefix'),
     }
   }, menu.currentDocument);
 }());

@@ -30,6 +30,11 @@ function TMSimulator(container, buttons) {
       .addEventListener('click', function () {
         self.machine.reset();
       });
+  buttons.run_until
+    .addEventListener('click', function () {
+      self.machine.untilState = $('#until_value').val();
+      self.machine.isRunning = !self.machine.isRunning;
+    });
   buttons.all = values(buttons);
 
   this.clear();

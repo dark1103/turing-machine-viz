@@ -28,12 +28,16 @@ TuringMachine.prototype.step = function () {
   var instruct = this.nextInstruction;
   if (instruct == null) { return false; }
 
+  var currentSymb = this.tape.read();
+  console.log(this.state + "," + currentSymb + " -> " + instruct.move + (instruct.symbol !== currentSymb ? ('(' + instruct.symbol + ')') : '') + (instruct.state !== this.state ? ": " + instruct.state : '') + "    " + this.tape);
+
   this.tape.write(instruct.symbol);
   move(this.tape, instruct.move);
   this.state = instruct.state;
 
   return true;
 };
+
 
 Object.defineProperties(TuringMachine.prototype, {
   nextInstruction: {
